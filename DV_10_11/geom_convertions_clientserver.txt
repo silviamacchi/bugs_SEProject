@@ -1,0 +1,34 @@
+------------------------------------------------------------------
+| Comandi per gestire l'import di geometrie dal server al client |
+| attivando la geometria per i plot                              |
+| considerare che si lavora con geodataframe e non dataframe     |
+------------------------------------------------------------------
+
+## CLIENT PART ##
+
+from shapely import wkt
+# to visualize the response, we can conver the data to a pandas geodataframe
+gdf = gpd.GeoDataFrame(data)
+gdf['geometry'] = gdf['geometry'].apply(wkt.loads)
+gdf.set_geometry('geometry', inplace=True)
+
+## SERVER PART ##
+
+@app.route("/api/--", methods=["POST"]) 
+def DV--():
+    ...
+
+    query = f"""
+    ...
+    """
+    df_query = gpd.read_postgis(sql=text(query), con=con, geom_col='geometry', params={
+        "pollutant": var_pollutant
+    })
+    # Convert geometry in WKT format
+    # (This is necessary because the JSON serializer cannot handle geometry objects directly)
+    df_query['geometry'] = df_query['geometry'].apply(lambda geom: geom.wkt)
+
+    # The query returns a DataFrame
+    records = df_query.to_dict(orient="records")  # We convert the DataFrame to a list of dictionaries
+    
+    return jsonify(records) # This will convert the list of dictionaries to JSON format and send it back to the client
