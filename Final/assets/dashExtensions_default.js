@@ -11,6 +11,22 @@ window.dashExtensions = Object.assign({}, window.dashExtensions, {
             return L.marker(latlng);
         },
         function1: function(feature) {
+                return {
+                    color: feature.properties.color_code || "blue",
+                    weight: 1,
+                    fillOpacity: 0.5
+                };
+            }
+
+            ,
+        function2: function(feature, layer) {
+                if (feature.properties && feature.properties.prov_upper) {
+                    layer.bindTooltip(feature.properties.prov_upper);
+                }
+            }
+
+            ,
+        function3: function(feature) {
             return {
                 color: feature.properties.color || "blue",
                 weight: 1,
