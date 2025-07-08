@@ -21,7 +21,7 @@ window.dashExtensions = Object.assign({}, window.dashExtensions, {
             ,
         function2: function(feature, layer) {
                 if (feature.properties && feature.properties.prov_upper) {
-                    layer.bindTooltip(feature.properties.prov_upper);
+                    layer.bindTooltip(feature.properties.prov_upper + "<br/>" + "Average: " + feature.properties.average_value);
                 }
             }
 
